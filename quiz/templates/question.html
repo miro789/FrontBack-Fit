@@ -1,0 +1,83 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <!-- Header Banner -->
+    <header>
+      <h1>Quiz App: Frontend vs Backend</h1>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="container">
+      <div class="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          style="width: {{ progress_percentage|default:0 }}%"
+          aria-valuenow="{{ progress_percentage|default:0 }}"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          {{ progress_percentage|default:0 }}%
+        </div>
+      </div>
+    </div>
+
+    <!-- Question Body -->
+    <div class="container">
+      <h2>{{ question.topic }}</h2>
+      {% if question.image_url %}
+      <img
+        src="{{ question.image_url }}"
+        alt="Question Image"
+        class="img-fluid my-3"
+      />
+      {% endif %}
+      <p>{{ question.scenario }}</p>
+
+      <!-- Choices -->
+      <form method="POST" action="{% url 'question' question.id %}">
+        {% csrf_token %}
+        <div>
+          <label>
+            <input type="radio" name="answer" value="A" /> {{ question.choice_a }}
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="radio" name="answer" value="B" /> {{ question.choice_b }}
+          </label>
+        </div>
+
+        <!-- Validation -->
+        {% if error_message %}
+        <div class="text-danger">{{ error_message }}</div>
+        {% endif %}
+
+        <!-- Navigation Buttons -->
+        <div class="d-flex justify-content-between mt-4">
+          {% if previous_question_id %}
+          <a
+            href="{% url 'question' previous_question_id %}"
+            class="btn btn-secondary"
+            >Previous</a
+          >
+          {% endif %}
+          <button type="submit" class="btn btn-primary">Next</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; {{ year }} Quiz App</p>
+    </footer>
+  </body>
+</html>

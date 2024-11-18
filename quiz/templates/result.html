@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Results</title>
+</head>
+<body>
+    <h1>Quiz Results</h1>
+    <p>Frontend Score: {{ frontend_score }}%</p>
+    <p>Backend Score: {{ backend_score }}%</p>
+    <h2>{{ result }}</h2>
+
+    <h3>Rate the App</h3>
+    <form method="POST" action="/rate-app/">
+        {% csrf_token %}
+        <label for="rating">Give your rating (1-5):</label>
+        <select name="rating" id="rating">
+            <option value="1">1 Star</option>
+            <option value="2">2 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="5">5 Stars</option>
+        </select>
+        <button type="submit">Submit Rating</button>
+    </form>
+</body>
+</html>
